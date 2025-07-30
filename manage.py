@@ -2,7 +2,8 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-
+import dotenv  # ✅ Load support for .env files
+dotenv.load_dotenv()  # ✅ Parse .env before Django reads settings
 
 def main():
     """Run administrative tasks."""
@@ -17,6 +18,7 @@ def main():
         ) from exc
     execute_from_command_line(sys.argv)
 
-
 if __name__ == '__main__':
     main()
+
+
