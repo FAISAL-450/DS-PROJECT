@@ -49,6 +49,8 @@ DATABASES = {
     }
 }
 
+LOGIN_URL = '/auth/login/'
+
 # 📦 Installed apps
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -64,7 +66,43 @@ INSTALLED_APPS = [
     "sales_department",
     "project",
     "customer",
+'azure_auth',
+'django.contrib.sites',  # Required by django-azure-auth
 ]
+
+AUTHENTICATION_BACKENDS = [
+    'azure_auth.backends.AzureActiveDirectoryBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+# Load environment-specific Azure AD credentials
+AZURE_APP_CONTEXT = os.getenv("AZURE_APP_CONTEXT", "construction")  # Fallback to construction
+
+if AZURE_APP_CONTEXT == "construction":
+    AZURE_AUTH = {
+        "CLIENT_ID": os.getenv("AZURE_CONSTRUCTION_CLIENT_ID"),
+        "CLIENT_SECRET": os.getenv("AZURE_CONSTRUCTION_CLIENT_SECRET"),
+        "TENANT_ID": os.getenv("AZURE_TENANT_ID"),
+        "AZURE_REDIRECT_URI": "https://ds-erp-app.azurewebsites.net/auth/construction_redirect",
+        "ROLES": {
+            "aad-group-id-of-ConstructionDept": "ConstructionGroup"
+        },
+        "GROUPS_REQUIRED": True,
+        "LOGIN_REDIRECT_URL": "/construction/dashboard/",
+    }
+
+elif AZURE_APP_CONTEXT == "sales":
+    AZURE_AUTH = {
+        "CLIENT_ID": os.getenv("AZURE_SALES_CLIENT_ID"),
+        "CLIENT_SECRET": os.getenv("AZURE_SALES_CLIENT_SECRET"),
+        "TENANT_ID": os.getenv("AZURE_TENANT_ID"),
+        "AZURE_REDIRECT_URI": "https://ds-erp-app.azurewebsites.net/auth/sales_redirect",
+        "ROLES": {
+            "aad-group-id-of-SalesDept": "SalesGroup"
+        },
+        "GROUPS_REQUIRED": True,
+        "LOGIN_REDIRECT_URL": "/sales/dashboard/",
+    }
 
 # ⚙️ Middleware stack
 MIDDLEWARE = [
@@ -122,7 +160,6 @@ if not DEBUG:
 
 # 🆔 Default primary key field
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
 
 
 
