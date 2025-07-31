@@ -16,10 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.contrib.auth.decorators import login_required
+from home.views import root_redirect_view  # Your view
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('home.urls')),  # Homepage
-    path('construction-department/', include('construction_department.urls')),  # ✅ Add this line
-    path('sales-department/', include('sales_department.urls')),  # ✅ Add this line
+    path('', login_required(root_redirect_view), name='home_redirect'),
+    path('construction-department/', include('construction_department.urls')),
+    path('sales-department/', include('sales_department.urls')),
+    path('auth/', include('azure_auth.urls')),
 ]
+
 

@@ -56,6 +56,10 @@
   <h1>CD-Module</h1>
 
   <div class="container">
+
+    {% if user.groups.filter(name="Construction").exists %}
+
+
     <a href="{% url 'project_list' %}">
       <button class="nav-button">📝 Project</button>
     </a>
@@ -63,7 +67,9 @@
     <a href="{% url 'home' %}">
       <button class="nav-button home-button">🏠 Back to Home</button>
     </a>
- 
+
+ {% endif %}
+
  </div>
 </body>
 </html>

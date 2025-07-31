@@ -56,14 +56,17 @@
   <h1>CD-Module</h1>
 
   <div class="container">
-    <a href="{% url 'customer_list' %}">
+
+{% if user.groups.filter(name="Sales").exists %}
+  <a href="{% url 'customer_list' %}">
       <button class="nav-button">📝 Customer</button>
     </a>
 
-    <a href="{% url 'home' %}">
-      <button class="nav-button home-button">🏠 Back to Home</button>
-    </a>
- 
+  <a href="{% url 'home' %}">
+    <button class="nav-button home-button">🏠 Back to Home</button>
+  </a>
+{% endif %}
+
  </div>
 </body>
 </html>

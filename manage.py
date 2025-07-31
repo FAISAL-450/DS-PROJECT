@@ -1,13 +1,18 @@
 #!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
-import os
+
 import sys
+import os
+from pathlib import Path
 import dotenv  # ✅ Load support for .env files
-dotenv.load_dotenv()  # ✅ Parse .env before Django reads settings
+
+# ✅ Load .env file before Django reads settings
+BASE_DIR = Path(__file__).resolve().parent
+dotenv.load_dotenv(BASE_DIR / ".env")
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ds_garden.settings')
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ds_garden.settings")
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
@@ -18,7 +23,9 @@ def main():
         ) from exc
     execute_from_command_line(sys.argv)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
+
+
 
 

@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 import environ
 
@@ -68,6 +69,7 @@ INSTALLED_APPS = [
     "customer",
 'azure_auth',
 'django.contrib.sites',  # Required by django-azure-auth
+
 ]
 
 AUTHENTICATION_BACKENDS = [
